@@ -1,0 +1,127 @@
+openapi: 3.0.0
+info:
+  title: API de Mensagens
+  description: API para gerenciar mensagens
+  version: 1.0.0
+servers:
+  - url: http://localhost:3000
+    description: Servidor local
+paths:
+  /api/data:
+    post:
+      summary: Cria uma nova mensagem
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        '201':
+          description: Mensagem criada com sucesso
+        '400':
+          description: Campo obrigatório ausente
+
+  /api/data/{id}:
+    get:
+      summary: Obtém uma mensagem específica
+      parameters:
+        - in: path
+          name: id
+          required: true    
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: Sucesso
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Message'
+        '404':
+          description: Mensagem não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Substitui uma mensagem completamente
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        '200':
+          description: Mensagem atualizada
+        '400':
+          description: Campo obrigatório ausente
+        '404':
+          description: ID não encontrado
+
+    patch:
+      summary: Atualiza parcialmente uma mensagem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MessageInput'
+      responses:
+        '200':
+          description: Mensagem atualizada parcialmente
+        '400':
+          description: Campo obrigatório ausente
+        '404':
+          description: ID não encontrado
+
+    delete:
+      summary: Remove uma mensagem
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '204':
+          description: Mensagem removida com sucesso
+        '404':
+          description: ID não encontrado
+
+components:
+  schemas:
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        message:
+          type: string
+    MessageInput:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
