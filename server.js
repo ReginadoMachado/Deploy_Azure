@@ -2,16 +2,6 @@ const express = require('express');
 const app = express();
 const PORT = 3000;
 
-const swaggerUi = require('swagger-ui-express');
-//carrega a documentação swagger
-const YAMl = require('yamljs');
-//carrega a documentação do swagger
-const swaggerDocument = YAMl.load('./swagger/swagger.yml')
-
-//adiciona o swagger UI
-app.use('./swagger/swagger.yml', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
-
 // Permite que o Express entenda JSON no corpo da requisição
 app.use(express.json());
 
